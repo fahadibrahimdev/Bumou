@@ -1,7 +1,8 @@
-# Uncomment this line to define a global platform for your project
+source 'https://cdn.cocoapods.org/'
+source 'https://github.com/aliyun/aliyun-specs.git' # Replace with the correct URL
+
 platform :ios, '14.0'
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -32,6 +33,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  
   target 'RunnerTests' do
     inherit! :search_paths
   end
@@ -44,11 +46,11 @@ post_install do |installer|
     target.build_configurations.each do |config|
       # Workaround for https://github.com/flutter/flutter/issues/64502
       config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES' # <= this line for webrtc
-      
+
       xcconfig_path = config.base_configuration_reference.real_path
-        xcconfig = File.read(xcconfig_path)
-        xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-        File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
+      xcconfig = File.read(xcconfig_path)
+      xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
+      File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
 
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
@@ -99,4 +101,3 @@ post_install do |installer|
     # End of the permission_handler configuration
   end
 end
-
