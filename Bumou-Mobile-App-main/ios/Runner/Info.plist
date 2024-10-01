@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
+	<key>OneSignal_app_groups_key</key>
+	<string>group.com.BUMOU.onesignal</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>bumou</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsForMedia</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires camera access to enable you to upload profile pictures and share images directly in posts and chats.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The app uses your location to enrich your chat sharing experience and set up your local profile preferences, only when you are using the app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The app uses your location to enrich your chat sharing experience and set up your local profile preferences, only when you are using the app.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app does not use your location in the background but needs this permission for cases when the app is in the foreground or running.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The app needs to access your photo library to allow you to choose images for uploading to your profile and sharing in posts and chats.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To save new photos to your library from this app, we request permission to access your photo library.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow microphone access to record voice messages that you can share in chats.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>The app does not require access to your calendar. This permission will not be used.</string>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mail</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,54 @@
+# Flutter/Dart specific files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+.generated/
+.flutter/
+.meteor/
+
+# Android specific
+android/.gradle/
+android/.idea/
+android/captures/
+android/app/*.keystore
+android/local.properties
+android/app/build/
+
+# iOS specific
+ios/Flutter/.last_build_id
+ios/Pods/
+ios/.generated/
+ios/Runner.xcworkspace/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+
+# Web specific
+web/.dart_tool/
+web/.packages
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# macOS specific
+.DS_Store
+.idea/
+
+# Package file
+pubspec.lock
+
+# Firebase and Google services
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json

@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  dev-db:
+    image: postgres:15
+    ports:
+      - 5436:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1122
+      POSTGRES_DB: bumou
+    networks:
+      - dholasain
+networks:
+  dholasain:

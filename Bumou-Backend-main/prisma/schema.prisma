@@ -1,0 +1,305 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  email           String            @unique
+  username        String            @unique
+  phone           String            @unique
+  password        String
+  userType        UserType          @default(STUDENT)
+  local           String?
+  firstName       String
+  lastName        String
+  profilePicture  String?
+  address         String?
+  city            String?
+  state           String?
+  zip             String?
+  country         String?
+  schoolName      String?
+  className       String?
+  teacherName     String?
+  isVerified      Boolean           @default(true)
+  isBlocked       Boolean           @default(false)
+  isOnline        Boolean           @default(false)
+  isDeleted       Boolean           @default(false)
+  isHelping       Boolean           @default(true)
+  comments        Comment[]
+  helpReadStatus  HelpReadStatus[]
+  likes           Like[]
+  posts           Post[]
+  chatroomMessage ChatroomMessage[]
+  friends1        Friendship[]      @relation("friendships1")
+  friends2        Friendship[]      @relation("friendships2")
+  help_messages   HelpMessage[]
+  helper          Help[]            @relation("helper")
+  requestedHelp   Help[]            @relation("requestedBy")
+  deviceTokens    UserDeviceToken[]
+  moods           UserMood[]
+  sessions        UserSession[]
+  chatrooms       Chatroom[]        @relation("ChatroomToUser")
+
+  @@map("users")
+}
+
+model UserDeviceToken {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  token     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_device_tokens")
+}
+
+model UserSession {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  token     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model UserMood {
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  userId    String
+  mood      UserMoodType
+  note      String?
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_moods")
+}
+
+model Friendship {
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  status    FriendshipStatus @default(PENDING)
+  user1Id   String
+  user2Id   String
+  user1     User             @relation("friendships1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User             @relation("friendships2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  @@map("friendships")
+}
+
+model Chatroom {
+  id           String               @id
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  name         String?
+  lastMessage  String?
+  readStatuses ChatroomReadStatus[]
+  messages     ChatroomMessage[]
+  members      User[]               @relation("ChatroomToUser")
+
+  @@map("chatrooms")
+}
+
+model ChatroomMessage {
+  id                  String                @id @default(uuid())
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  chatroomId          String
+  senderId            String
+  message             String
+  status              ChatroomMessageStatus @default(SENT)
+  type                ChatroomMessageType   @default(TEXT)
+  file                String?
+  call_message_status CallMessageStatus?
+  payload             String?
+  reply_id            String?
+  isDeleted           Boolean               @default(false)
+  readBy              ChatroomReadStatus[]
+  chatroom            Chatroom              @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
+  reply               ChatroomMessage?      @relation("reply", fields: [reply_id], references: [id])
+  chat_message        ChatroomMessage[]     @relation("reply")
+  sender              User                  @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("chatroom_messages")
+}
+
+model ChatroomReadStatus {
+  id         String          @id @default(uuid())
+  chatroomId String
+  userId     String
+  messageId  String
+  createdAt  DateTime        @default(now())
+  chatroom   Chatroom        @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
+  message    ChatroomMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([chatroomId, userId, messageId])
+}
+
+model Post {
+  id               String            @id @default(uuid())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  is_anonymous     Boolean           @default(false)
+  text             String?
+  mood             String?
+  userId           String
+  total_likes      Int               @default(0)
+  total_comments   Int               @default(0)
+  comments         Comment[]
+  likes            Like[]
+  mediaAttachments MediaAttachment[]
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MediaAttachment {
+  id     String    @id @default(uuid())
+  type   MediaType
+  url    String
+  postId String
+  post   Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+  postId    String
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Help {
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  expiresAt      DateTime         @default(now())
+  requestedById  String
+  helperId       String?
+  status         HelpStatus       @default(PENDING)
+  locationLat    Float?
+  locationLng    Float?
+  address        String?
+  isDeleted      Boolean          @default(false)
+  helpReadStatus HelpReadStatus[]
+  messages       HelpMessage[]
+  helper         User?            @relation("helper", fields: [helperId], references: [id])
+  requestedBy    User             @relation("requestedBy", fields: [requestedById], references: [id], onDelete: Cascade)
+
+  @@map("helps")
+}
+
+model HelpMessage {
+  id          String                @id @default(uuid())
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  helpId      String
+  senderId    String
+  message     String?
+  status      ChatroomMessageStatus @default(SENT)
+  type        ChatroomMessageType   @default(TEXT)
+  file        String?
+  locationLat Float?
+  locationLng Float?
+  isDeleted   Boolean               @default(false)
+  readBy      HelpReadStatus[]
+  help        Help                  @relation(fields: [helpId], references: [id], onDelete: Cascade)
+  sender      User                  @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("help_messages")
+}
+
+model HelpReadStatus {
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  helpId        String
+  userId        String
+  helpMessageId String?
+  help          Help         @relation(fields: [helpId], references: [id])
+  helpMessage   HelpMessage? @relation(fields: [helpMessageId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+
+  @@unique([helpId, userId])
+}
+
+enum UserType {
+  ADULT
+  STUDENT
+}
+
+enum UserMoodType {
+  VERYGOOD
+  GOOD
+  NEUTRAL
+  BAD
+  VERYBAD
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ChatroomMessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  VOICE
+  FILE
+  LOCATION
+  JOIN
+  CALL
+}
+
+enum CallMessageStatus {
+  REQUEST
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  ENDED
+}
+
+enum ChatroomMessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum HelpStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  EXPIRED
+  CANCELLED
+}
